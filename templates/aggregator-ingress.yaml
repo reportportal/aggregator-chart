@@ -5,7 +5,7 @@ metadata:
   labels: {{ include "labels" . | indent 4 }}
   annotations:
     {{- range $key, $value := .Values.ingress.annotations }}
-      {{ $key }}: {{ $value | quote }}
+    {{ $key }}: {{ $value | quote }}
     {{- end }}
 spec:
   rules:

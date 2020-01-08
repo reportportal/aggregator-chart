@@ -33,6 +33,8 @@ landing:
 ingress:
   hosts:
     - status.reportportal.com
+  annotations:
+    kubernetes.io/ingress.class: nginx
     
 # node selector for all components, if any
 nodeSelector:
