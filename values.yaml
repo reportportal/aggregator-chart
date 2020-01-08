@@ -4,8 +4,8 @@ registry: "" # docker-registry.com
 # list of images
 
 aggregator:
-  repository: reportportal/aggregator-chart
-  tag: 1.41
+  repository: reportportal/landing-aggregator
+  tag: 1.42
   pullPolicy: IfNotPresent
   resources:
     requests:
