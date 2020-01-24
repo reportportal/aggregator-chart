@@ -1,6 +1,6 @@
 apiVersion: v1
 description: Aggregator
-name: reportportal
+name: aggregator-chart
 version: 1.0.0
 sources:
 - https://github.com/reportportal/aggregator-chart
