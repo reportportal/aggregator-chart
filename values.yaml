@@ -12,8 +12,8 @@ aggregator:
       cpu: 50m
       memory: 64Mi
     limits:
-      cpu: 80m
-      memory: 96Mi
+      cpu: 160m
+      memory: 256Mi
 
 # aggregator settings
 
@@ -35,6 +35,10 @@ ingress:
     - status.reportportal.com
   annotations:
     kubernetes.io/ingress.class: nginx
+  tls: []
+  # - hosts:
+  #   - status.reportportal.com
+  #   secretName: status.reportportal.com-tls
     
 # node selector for all components, if any
 nodeSelector:
