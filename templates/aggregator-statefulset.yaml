@@ -34,6 +34,8 @@ spec:
           value: {{ .Values.landing.github_include_beta }}
         - name: "GITHUB_TOKEN"
           value: {{ .Values.landing.github_token }}
+        - name: "YOUTUBE_BUFFER_SIZE"
+          value: {{ .Values.landing.youtube_buffer_size }}
         - name: "YOUTUBE_CHANNEL_ID"
           value: {{ .Values.landing.youtube_channel_id }}
         - name: "GOOGLE_API_KEY"
