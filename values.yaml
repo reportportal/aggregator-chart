@@ -5,7 +5,7 @@ registry: "" # docker-registry.com
 
 aggregator:
   repository: reportportal/landing-aggregator
-  tag: 1.42
+  tag: latest
   pullPolicy: IfNotPresent
   resources:
     requests:
@@ -23,11 +23,12 @@ landing:
   twitter_consumer_secret:
   twitter_token:
   twitter_token_secret:
-  twitter_buffer_size: 
+  twitter_buffer_size: 10
   twitter_search_term: 
   github_include_beta: 
   github_token:
   youtube_channel_id:
+  youtube_buffer_size: 15
   google_api_key:
   
 ingress:
