@@ -5,7 +5,7 @@ registry: "" # docker-registry.com
 
 aggregator:
   repository: reportportal/landing-aggregator
-  tag: latest
+  tag: 1.46.1
   pullPolicy: IfNotPresent
   resources:
     requests:
@@ -30,6 +30,9 @@ landing:
   youtube_channel_id:
   youtube_buffer_size: 15
   google_api_key:
+  mailchimp_api_key:
+  mailchimp_user: landing-aggregator
+  mailchimp_timeout_seconds: 3
   
 ingress:
   hosts:
