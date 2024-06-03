@@ -22,13 +22,13 @@ ReportPortal is a TestOps service, that provides increased capabilities to speed
 Add the official ReportPortal Helm Chart repository:
 
 ```bash
-helm repo add reportportal https://reportportal.io/aggregator && helm repo update aggregator
+helm repo add reportportal https://reportportal.io/aggregator-chart/ && helm repo update aggregator/aggregator
 ```
 
 Install the chart:
 
 ```bash
-helm install my-release reportportal/aggregator
+helm install my-release aggregator/aggregator
 ```
 
 ## Uninstalling the Chart
@@ -52,13 +52,13 @@ helm install ./aggregator
 To search for available versions of a chart, use:
 
 ```bash
-helm search repo aggregator --versions
+helm search repo aggregator/aggregator --versions
 ```
 
 To install a specific version of a chart, use:
 
 ```bash
-helm install my-release reportportal/aggregator --version 1.46.1
+helm install my-release aggregator/aggregator --version 1.46.1
 ```
 
 ## Documentation
