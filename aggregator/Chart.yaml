@@ -1,0 +1,13 @@
+apiVersion: v2
+appVersion: 1.46.1
+description: Aggregator Helm chart for ReportPortal
+name: aggregator
+version: 1.46.1
+sources:
+- https://github.com/reportportal/aggregator-chart
+keywords:
+  - reportportal
+  - aggregator
+maintainers:
+  - name: reportportal
+    email: support@reportportal.io

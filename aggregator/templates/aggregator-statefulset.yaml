@@ -40,6 +40,12 @@ spec:
           value: {{ .Values.landing.youtube_channel_id }}
         - name: "GOOGLE_API_KEY"
           value: {{ .Values.landing.google_api_key }}
+        - name: "MAILCHIMP_API_KEY"
+          value: {{ .Values.landing.mailchimp_api_key }}
+        - name: "MAILCHIMP_USER"
+          value: {{ .Values.landing.mailchimp_user }}
+        - name: "MAILCHIMP_TIMEOUT_SECONDS"
+          value: {{ .Values.landing.mailchimp_timeout_seconds | default 3 }}
         image: "{{ .Values.aggregator.repository }}:{{ .Values.aggregator.tag }}"
         name: aggregator
         ports:
