@@ -23,52 +23,52 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ .Values.secretName }}
-              key: {{ .Values.secret.contentful.space_id_key | default "contentful_space_id"}}
+              key: contentful_space_id
         - name: "CONTENTFUL_TOKEN"
           valueFrom:
             secretKeyRef:
               name: {{ .Values.secretName }}
-              key: {{ .Values.secret.contentful.token_key | default "contentful_token"}}
+              key: contentful_token
         - name: "TWITTER_CONSUMER"
           valueFrom:
             secretKeyRef:
               name: {{ .Values.secretName }}
-              key: {{ .Values.secret.twitter.consumer_key | default "twitter_consumer"}}
+              key: twitter_consumer
         - name: "TWITTER_CONSUMER_SECRET"
           valueFrom:
             secretKeyRef:
               name: {{ .Values.secretName }}
-              key: {{ .Values.secret.twitter.consumer_secret_key | default "twitter_consumer_secret"}}
+              key: twitter_consumer_secret
         - name: "TWITTER_TOKEN"
           valueFrom:
             secretKeyRef:
               name: {{ .Values.secretName }}
-              key: {{ .Values.secret.twitter.token_key | default "twitter_token" }} 
+              key: twitter_token
         - name: "TWITTER_TOKEN_SECRET"
           valueFrom:
             secretKeyRef:
               name: {{ .Values.secretName }}
-              key: {{ .Values.secret.twitter.token_secret_key | default "twitter_token_secret"}}
+              key: twitter_token_secret
         - name: "GITHUB_TOKEN"
           valueFrom:
             secretKeyRef:
               name: {{ .Values.secretName }}
-              key: {{ .Values.secret.github_token_key | default "github_token"}}
+              key: github_token
         - name: "YOUTUBE_CHANNEL_ID"
           valueFrom:
             secretKeyRef:
               name: {{ .Values.secretName }}
-              key: {{ .Values.secret.youtube.channel_id_key | default "youtube_channel_id" }}
+              key: youtube_channel_id
         - name: "GOOGLE_API_KEY"
           valueFrom:
             secretKeyRef:
               name: {{ .Values.secretName }}
-              key: {{ .Values.secret.google_api_key_key | default "google_api_key"}}
+              key: google_api_key
         - name: "MAILCHIMP_API_KEY"
           valueFrom:
             secretKeyRef:
               name: {{ .Values.secretName }}
-              key: {{ .Values.secret.mailchimp.api_key_key | default "mailchimp_api_key"}}
+              key: mailchimp_api_key
         {{- else }}
         - name: CONTENTFUL_SPACE_ID
           value: "{{ .Values.landing.contentful.space_id }}"
