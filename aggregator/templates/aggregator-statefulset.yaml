@@ -17,35 +17,97 @@ spec:
       containers:
       - env:
         - name: "PORT"
-          value: "8080"
+          value: "{{ .Values.landing.port }}"
+        {{- if .Values.secretName }}
+        - name: "CONTENTFUL_SPACE_ID"
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secretName }}
+              key: {{ .Values.secret.contentful.space_id_key | default "contentful_space_id_key"}}
+        - name: "CONTENTFUL_TOKEN"
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secretName }}
+              key: {{ .Values.secret.contentful.token_key | default "contentful_token_key"}}
         - name: "TWITTER_CONSUMER"
-          value: {{ .Values.landing.twitter_consumer }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secretName }}
+              key: {{ .Values.secret.twitter.consumer_key | default "twitter_consumer"}}
         - name: "TWITTER_CONSUMER_SECRET"
-          value: {{ .Values.landing.twitter_consumer_secret }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secretName }}
+              key: {{ .Values.secret.twitter.consumer_secret_key | default "twitter_consumer_secret"}}
         - name: "TWITTER_TOKEN"
-          value: {{ .Values.landing.twitter_token }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secretName }}
+              key: {{ .Values.secret.twitter.token_key | default "twitter_token" }} 
         - name: "TWITTER_TOKEN_SECRET"
-          value: {{ .Values.landing.twitter_token_secret }}
-        - name: "TWITTER_BUFFER_SIZE"
-          value: {{ .Values.landing.twitter_buffer_size }}
-        - name: "TWITTER_SEARCH_TERM"
-          value: {{ .Values.landing.twitter_search_term}}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secretName }}
+              key: {{ .Values.secret.twitter.token_secret_key | default "twitter_token_secret"}}
         - name: "GITHUB_INCLUDE_BETA"
-          value: {{ .Values.landing.github_include_beta }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secretName }}
+              key: {{ .Values.secret.github_include_beta_key | default "github_include_beta"}}
         - name: "GITHUB_TOKEN"
-          value: {{ .Values.landing.github_token }}
-        - name: "YOUTUBE_BUFFER_SIZE"
-          value: {{ .Values.landing.youtube_buffer_size }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secretName }}
+              key: {{ .Values.secret.github_token_key | default "github_token"}}
         - name: "YOUTUBE_CHANNEL_ID"
-          value: {{ .Values.landing.youtube_channel_id }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secretName }}
+              key: {{ .Values.secret.youtube.channel_id_key | default "youtube_channel_id" }}
         - name: "GOOGLE_API_KEY"
-          value: {{ .Values.landing.google_api_key }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secretName }}
+              key: {{ .Values.secret.google_api_key_key | default "google_api_key"}}
         - name: "MAILCHIMP_API_KEY"
-          value: {{ .Values.landing.mailchimp_api_key }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secretName }}
+              key: {{ .Values.secret.mailchimp.api_key_key | default "mailchimp_api_key"}}
+        {{- else }}
+        - name: CONTENTFUL_SPACE_ID
+          value: "{{ .Values.landing.contentful.space_id }}"
+        - name: CONTENTFUL_TOKEN
+          value: "{{ .Values.landing.contentful.token }}"
+        - name: "TWITTER_CONSUMER"
+          value: "{{ .Values.landing.twitter.consumer }}"
+        - name: "TWITTER_CONSUMER_SECRET"
+          value: "{{ .Values.landing.twitter.consumer_secret }}"
+        - name: "TWITTER_TOKEN"
+          value: "{{ .Values.landing.twitter.token }}"
+        - name: "TWITTER_TOKEN_SECRET"
+          value: "{{ .Values.landing.twitter.token_secret }}"
+        - name: "TWITTER_BUFFER_SIZE"
+          value: "{{ .Values.landing.twitter.buffer_size }}"
+        - name: "TWITTER_SEARCH_TERM"
+          value: "{{ .Values.landing.twitter.search_term}}"
+        - name: "GITHUB_INCLUDE_BETA"
+          value: "{{ .Values.landing.github_include_beta }}"
+        - name: "GITHUB_TOKEN"
+          value: "{{ .Values.landing.github_token }}"
+        - name: "YOUTUBE_BUFFER_SIZE"
+          value: "{{ .Values.landing.youtube.buffer_size }}"
+        - name: "YOUTUBE_CHANNEL_ID"
+          value: "{{ .Values.landing.youtube.channel_id }}"
+        - name: "GOOGLE_API_KEY"
+          value: "{{ .Values.landing.google_api_key }}"
+        - name: "MAILCHIMP_API_KEY"
+          value: "{{ .Values.landing.mailchimp.api_key }}"
         - name: "MAILCHIMP_USER"
-          value: {{ .Values.landing.mailchimp_user }}
+          value: "{{ .Values.landing.mailchimp.user }}"
         - name: "MAILCHIMP_TIMEOUT_SECONDS"
-          value: {{ .Values.landing.mailchimp_timeout_seconds | default 3 }}
+          value: "{{ .Values.landing.mailchimp.timeout_seconds }}"
+            {{- end }}
         image: "{{ .Values.aggregator.repository }}:{{ .Values.aggregator.tag }}"
         name: aggregator
         ports:
