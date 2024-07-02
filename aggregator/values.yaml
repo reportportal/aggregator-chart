@@ -28,7 +28,7 @@ landing:
     token_secret:
     buffer_size: 10
     search_term: "@ReportPortal_io"
-  github_include_beta:
+  github_include_beta: false
   github_token:
   youtube:
     channel_id:

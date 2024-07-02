@@ -23,12 +23,12 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ .Values.secretName }}
-              key: {{ .Values.secret.contentful.space_id_key | default "contentful_space_id_key"}}
+              key: {{ .Values.secret.contentful.space_id_key | default "contentful_space_id"}}
         - name: "CONTENTFUL_TOKEN"
           valueFrom:
             secretKeyRef:
               name: {{ .Values.secretName }}
-              key: {{ .Values.secret.contentful.token_key | default "contentful_token_key"}}
+              key: {{ .Values.secret.contentful.token_key | default "contentful_token"}}
         - name: "TWITTER_CONSUMER"
           valueFrom:
             secretKeyRef:
@@ -49,11 +49,6 @@ spec:
             secretKeyRef:
               name: {{ .Values.secretName }}
               key: {{ .Values.secret.twitter.token_secret_key | default "twitter_token_secret"}}
-        - name: "GITHUB_INCLUDE_BETA"
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.secretName }}
-              key: {{ .Values.secret.github_include_beta_key | default "github_include_beta"}}
         - name: "GITHUB_TOKEN"
           valueFrom:
             secretKeyRef:
