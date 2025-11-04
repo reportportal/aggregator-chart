@@ -136,10 +136,7 @@ spec:
           value: {{ .Values.landing.google.recaptchaScore | quote }}
         {{- if .Values.landing.google.applicationCredentials.credentialsSecretName }}
         - name: "GOOGLE_APPLICATION_CREDENTIALS"
-          valueFrom:
-            secretKeyRef:
-              name: "{{ .Values.landing.google.applicationCredentials.credentialsSecretName }}"
-              key: "{{ .Values.landing.google.applicationCredentials.credentialsKeyName }}"
+          value: {{ .Values.landing.google.applicationCredentials.credentialsPath | default "/etc/google/credentials.json" | quote }}
         {{- end }}
         # Mailchimp Configuration
         {{- if .Values.landing.mailchimp.secretName }}
@@ -218,3 +215,18 @@ spec:
           timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
           failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
         {{- end }}
+        {{- if .Values.landing.google.applicationCredentials.credentialsSecretName }}
+        volumeMounts:
+        - name: google-credentials
+          mountPath: {{ .Values.landing.google.applicationCredentials.credentialsMountPath | default "/etc/google" }}
+          readOnly: true
+        {{- end }}
+      {{- if .Values.landing.google.applicationCredentials.credentialsSecretName }}
+      volumes:
+      - name: google-credentials
+        secret:
+          secretName: {{ .Values.landing.google.applicationCredentials.credentialsSecretName }}
+          items:
+          - key: {{ .Values.landing.google.applicationCredentials.credentialsKeyName }}
+            path: credentials.json
+      {{- end }}

@@ -82,17 +82,19 @@ landing:
 
 #### 4. Google Application Credentials (Service Account JSON)
 
-For Google Cloud service account authentication, create a secret containing the JSON credentials file content:
+For Google Cloud service account authentication, create a secret containing the JSON credentials file content. **The secret will be mounted as a file volume, and the file path will be set as the `GOOGLE_APPLICATION_CREDENTIALS` environment variable.**
 
 **Method 1: From file (Recommended)**
 
 ```bash
 kubectl create secret generic google-app-credentials \
-  --from-literal=google-credentials.json="$(cat /path/to/your/service-account-key.json)" \
+  --from-literal=credentials.json="$(cat /path/to/your/service-account-key.json)" \
   --namespace=<your-namespace>
 ```
 
-**Method 2: Direct JSON content**
+**Method 2: Using the actual filename as the secret key**
+
+If your JSON file has a specific name (e.g., `credentials.json`):
 
 ```bash
 kubectl create secret generic google-app-credentials \
@@ -106,17 +108,27 @@ landing:
   google:
     applicationCredentials:
       credentialsSecretName: "google-app-credentials"
-      credentialsKeyName: "google-credentials.json"
+      credentialsKeyName: "credentials.json"
+      credentialsMountPath: "/etc/google"     # Where the secret will be mounted
+      credentialsPath: "/etc/google/credentials.json"  # Full path to the mounted file
 ```
 
 Or pass via Helm command:
 ```bash
 helm install my-release reportportal/aggregator \
   --set landing.google.applicationCredentials.credentialsSecretName=google-app-credentials \
-  --set landing.google.applicationCredentials.credentialsKeyName=google-credentials.json
+  --set landing.google.applicationCredentials.credentialsKeyName=credentials.json \
+  --set landing.google.applicationCredentials.credentialsMountPath=/etc/google \
+  --set landing.google.applicationCredentials.credentialsPath=/etc/google/credentials.json
 ```
 
-**Note:** The secret value will be passed directly as the `GOOGLE_APPLICATION_CREDENTIALS` environment variable. The JSON credentials file should contain service account information with the following structure:
+**How it works:**
+- The secret is **mounted as a volume** at `/etc/google` (or your custom `credentialsMountPath`)
+- The JSON file from the secret is available at `/etc/google/credentials.json` (or your custom `credentialsPath`)
+- The `GOOGLE_APPLICATION_CREDENTIALS` environment variable is set to the file path (e.g., `/etc/google/credentials.json`)
+- Google Cloud libraries will read the credentials from this file path
+
+**Note:** The JSON credentials file should contain service account information with the following structure:
 ```json
 {
   "type": "service_account",

@@ -11,8 +11,8 @@ This repository houses the Aggregator Helm chart for ReportPortal.
 
 ## Prerequisites
 
-* Kubernetes v1.26+
-* Helm Package Manager v3.4+
+* Kubernetes v1.30+
+* Helm Package Manager v3.10+
 
 ## Documentation
 

@@ -137,17 +137,25 @@ landing:
     recaptchaScore: 0.5
     ## @param landing.google.applicationCredentials Google Application Credentials configuration
     ## Use secret containing the JSON credentials file content
-    ## The secret value will be passed directly as the GOOGLE_APPLICATION_CREDENTIALS environment variable
+    ## The secret will be mounted as a file and the path will be set as GOOGLE_APPLICATION_CREDENTIALS environment variable
     ##
     applicationCredentials:
       ## @param landing.google.applicationCredentials.credentialsSecretName Kubernetes secret containing Google credentials JSON
-      ## The secret should contain the full JSON content as a string value
+      ## The secret should contain the JSON file content
       ## Leave empty to disable Google Application Credentials
       ##
       credentialsSecretName: ""
       ## @param landing.google.applicationCredentials.credentialsKeyName Secret key name when using credentialsSecretName
       ##
-      credentialsKeyName: "google-credentials.json"
+      credentialsKeyName: "credentials.json"
+      ## @param landing.google.applicationCredentials.credentialsMountPath Mount path for the credentials file
+      ## The file will be mounted at this path/credentials.json
+      ##
+      credentialsMountPath: "/etc/google"
+      ## @param landing.google.applicationCredentials.credentialsPath Full path to the credentials file
+      ## Defaults to {credentialsMountPath}/credentials.json
+      ##
+      credentialsPath: "/etc/google/credentials.json"
 
   ## @section Mailchimp Configuration
   ##
