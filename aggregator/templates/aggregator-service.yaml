@@ -3,13 +3,24 @@ kind: Service
 metadata:
   name: aggregator
   labels: {{ include "labels" . | indent 4 }}
+  annotations:
+    {{- if eq .Values.ingress.class "alb" }}
+    # ALB health check annotations
+    alb.ingress.kubernetes.io/healthcheck-path: "/"
+    alb.ingress.kubernetes.io/healthcheck-port: "{{ .Values.service.port }}"
+    alb.ingress.kubernetes.io/success-codes: "200"
+    alb.ingress.kubernetes.io/healthy-threshold-count: "2"
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: "3"
+    {{- end }}
 spec:
+  type: {{ .Values.service.type }}
+  {{- if eq .Values.service.type "ClusterIP" }}
   clusterIP: None
+  {{- end }}
   ports:
   - name: headless
-    port: 8080
+    port: {{ .Values.service.port }}
     protocol: TCP
-    targetPort: 8080
+    targetPort: {{ .Values.service.port }}
   selector:
     component: reportportal-aggregator
-  type: ClusterIP

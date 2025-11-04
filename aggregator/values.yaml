@@ -1,51 +1,300 @@
-# docker registry in which the images are hosted
-registry: "" # docker-registry.com
-
-# list of images
-
-aggregator:
+## @section Image Configuration
+##
+image:
+  ## @param image.registry Docker registry for the aggregator image
+  ##
+  registry: ""
+  ## @param image.repository Image repository name
+  ##
   repository: reportportal/landing-aggregator
+  ## @param image.tag Image tag
+  ##
   tag: 1.46.1
+  ## @param image.pullPolicy Image pull policy
+  ##
   pullPolicy: IfNotPresent
-  resources:
-    requests:
-      cpu: 50m
-      memory: 64Mi
-    limits:
-      cpu: 160m
-      memory: 256Mi
 
-# aggregator settings
+## @section Resources Configuration
+##
+resources:
+  ## @param resources.requests Resource requests for the aggregator container
+  ##
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  ## @param resources.limits Resource limits for the aggregator container
+  ##
+  limits:
+    cpu: 160m
+    memory: 256Mi
 
-landing:
+## @section Replica Configuration
+##
+## @param replicas Number of replicas for the StatefulSet
+##
+replicas: 1
+
+## @section Service Configuration
+##
+service:
+  ## @param service.type Kubernetes service type
+  ## Options: ClusterIP, NodePort, LoadBalancer
+  ##
+  type: ClusterIP
+  ## @param service.port Port number for the aggregator service
+  ##
   port: 8080
-  twitter_consumer:
-  twitter_consumer_secret:
-  twitter_token:
-  twitter_token_secret:
-  twitter_buffer_size: 10
-  twitter_search_term: 
-  github_include_beta: 
-  github_token:
-  youtube_channel_id:
-  youtube_buffer_size: 15
-  google_api_key:
-  mailchimp_api_key:
-  mailchimp_user: landing-aggregator
-  mailchimp_timeout_seconds: 3
+
+## @section Landing Page Configuration
+##
+landing:
+
+  ## @section X (formerly Twitter) Configuration
+  ##
+  x:
+    ## @param landing.x.secretName Kubernetes secret containing X (formerly Twitter) credentials
+    ## Leave empty to use inline credentials below
+    ## Recommended for production: create a secret and reference it here
+    ##
+    secretName: ""
+    ## @param landing.x.consumerKeyName and @param landing.x.consumerSecretKeyName
+    ## @param landing.x.tokenKeyName and @param landing.x.tokenSecretKeyName
+    ## Secret key names when using landing.x.secretName
+    ## These map to the keys in your Kubernetes secret
+    ##
+    consumerKeyName: "x-consumer"
+    consumerSecretKeyName: "x-consumer-secret"
+    tokenKeyName: "x-token"
+    tokenSecretKeyName: "x-token-secret"
+    ## @param landing.x.consumer and @param landing.x.consumerSecret
+    ## @param landing.x.token and @param landing.x.tokenSecret
+    ## Inline X (formerly Twitter) credentials (not recommended for production)
+    ##
+    consumer: ""
+    consumerSecret: ""
+    token: ""
+    tokenSecret: ""
+    ## @param landing.x.bufferSize X buffer size
+    ##
+    bufferSize: 10
+    ## @param landing.x.searchTerm X search term
+    ##
+    searchTerm: ""
+
+  ## @section GitHub Configuration
+  ##
+  github:
+    ## @param landing.github.secretName Kubernetes secret containing GitHub token
+    ## Leave empty to use inline token below
+    ##
+    secretName: ""
+    ## @param landing.github.tokenKeyName Secret key name when using landing.github.secretName
+    ##
+    tokenKeyName: "github-token"
+    ## @param landing.github.token Inline GitHub token (not recommended for production)
+    ##
+    token: ""
+    ## @param landing.github.includeBeta Include beta releases
+    ##
+    includeBeta: ""
+
+  ## @section YouTube Configuration
+  ##
+  youtube:
+    ## @param landing.youtube.channelId YouTube channel ID
+    ##
+    channelId: ""
+    ## @param landing.youtube.bufferSize YouTube buffer size
+    ##
+    bufferSize: 15
+
+  ## @section Google API Configuration
+  ##
+  google:
+    ## @param landing.google.secretName Kubernetes secret containing Google credentials
+    ## Can contain: apiKey, recaptchaKey
+    ## Leave empty to use inline values below
+    ##
+    secretName: ""
+    ## @param landing.google.apiKeyKeyName Secret key name when using landing.google.secretName for API key
+    ##
+    apiKeyKeyName: "google-api-key"
+    ## @param landing.google.apiKey Inline Google API key (not recommended for production)
+    ##
+    apiKey: ""
+    ## @param landing.google.projectId Google Cloud project ID
+    ##
+    projectId: ""
+    ## @param landing.google.recaptchaKeyKeyName Secret key name when using landing.google.secretName for reCAPTCHA key
+    ##
+    recaptchaKeyKeyName: "google-recaptcha-key"
+    ## @param landing.google.recaptchaKey Google reCAPTCHA site key
+    ## Inline value (not recommended for production). Use secretName instead.
+    ##
+    recaptchaKey: ""
+    ## @param landing.google.recaptchaScore Google reCAPTCHA score threshold (0.0 - 1.0)
+    ##
+    recaptchaScore: 0.5
+    ## @param landing.google.applicationCredentials Google Application Credentials configuration
+    ## Use secret containing the JSON credentials file content
+    ## The secret value will be passed directly as the GOOGLE_APPLICATION_CREDENTIALS environment variable
+    ##
+    applicationCredentials:
+      ## @param landing.google.applicationCredentials.credentialsSecretName Kubernetes secret containing Google credentials JSON
+      ## The secret should contain the full JSON content as a string value
+      ## Leave empty to disable Google Application Credentials
+      ##
+      credentialsSecretName: ""
+      ## @param landing.google.applicationCredentials.credentialsKeyName Secret key name when using credentialsSecretName
+      ##
+      credentialsKeyName: "google-credentials.json"
+
+  ## @section Mailchimp Configuration
+  ##
+  mailchimp:
+    ## @param landing.mailchimp.secretName Kubernetes secret containing Mailchimp credentials
+    ## Leave empty to use inline credentials below
+    ##
+    secretName: ""
+    ## @param landing.mailchimp.apiKeyKeyName Secret key name when using landing.mailchimp.secretName
+    ##
+    apiKeyKeyName: "mailchimp-api-key"
+    ## @param landing.mailchimp.apiKey Inline Mailchimp API key (not recommended for production)
+    ##
+    apiKey: ""
+    ## @param landing.mailchimp.user Mailchimp username
+    ##
+    user: "landing-aggregator"
+    ## @param landing.mailchimp.timeoutSeconds Mailchimp timeout in seconds
+    ##
+    timeoutSeconds: 3
+
+  ## @section Contentful Configuration
+  ##
+  contentful:
+    ## @param landing.contentful.secretName Kubernetes secret containing Contentful credentials
+    ## Can contain: spaceId, token
+    ## Leave empty to use inline values below
+    ##
+    secretName: ""
+    ## @param landing.contentful.spaceIdKeyName Secret key name when using landing.contentful.secretName for space ID
+    ##
+    spaceIdKeyName: "contentful-space-id"
+    ## @param landing.contentful.tokenKeyName Secret key name when using landing.contentful.secretName for token
+    ##
+    tokenKeyName: "contentful-token"
+    ## @param landing.contentful.spaceId Inline Contentful space ID (not recommended for production)
+    ##
+    spaceId: ""
+    ## @param landing.contentful.token Inline Contentful access token (not recommended for production)
+    ##
+    token: ""
   
 ingress:
+  ## @param ingress.enable Enable ingress resource
+  ##
+  enable: true
+  ## @param ingress.hosts List of hosts for ingress rules
+  ##
   hosts:
     - status.reportportal.com
+  ## @param ingress.class Ingress class to use (nginx, alb, gce, etc.)
+  ##
+  class: nginx
   annotations:
-    kubernetes.io/ingress.class: nginx
+    nginx: {}
+    alb: {}
+      ## AWS Load Balancer Controller annotations
+      # alb.ingress.kubernetes.io/load-balancer-name: "aggregator-alb"
+      # alb.ingress.kubernetes.io/scheme: "internet-facing"
+      # alb.ingress.kubernetes.io/target-type: "ip"
+      # alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+      # alb.ingress.kubernetes.io/ssl-redirect: "443"
+      # alb.ingress.kubernetes.io/group.name: "aggregator"
+      # alb.ingress.kubernetes.io/group.order: "1"
+      ## Health check settings
+      # alb.ingress.kubernetes.io/healthcheck-path: "/"
+      # alb.ingress.kubernetes.io/healthcheck-port: "traffic-port"
+      # alb.ingress.kubernetes.io/healthcheck-protocol: "HTTP"
+      # alb.ingress.kubernetes.io/success-codes: "200"
+      # alb.ingress.kubernetes.io/healthy-threshold-count: "2"
+      # alb.ingress.kubernetes.io/unhealthy-threshold-count: "2"
+      ## Security settings (uncomment and set your values)
+      # alb.ingress.kubernetes.io/security-groups: "sg-xxxxxxxxx"
+      # alb.ingress.kubernetes.io/subnets: "subnet-xxxxxxxxx,subnet-yyyyyyyyy"
+      ## SSL/TLS settings (uncomment and set your certificate ARN)
+      # alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:region:account:certificate/certificate-id"
+      ## Additional ALB attributes (uncomment and customize)
+      # alb.ingress.kubernetes.io/load-balancer-attributes: "idle_timeout.timeout_seconds=60"
   tls: []
   # - hosts:
   #   - status.reportportal.com
   #   secretName: status.reportportal.com-tls
-    
-# node selector for all components, if any
+
+## @section Health Probes Configuration
+##
+## @param readinessProbe Readiness probe configuration
+##
+readinessProbe:
+  enabled: true
+  path: "/"
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+  successThreshold: 1
+
+## @param livenessProbe Liveness probe configuration
+##
+livenessProbe:
+  enabled: true
+  path: "/"
+  initialDelaySeconds: 60
+  periodSeconds: 30
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+## @section Security Configuration
+##
+## @param securityContext Pod security context
+##
+securityContext: {}
+
+## @param serviceAccount Service account configuration
+##
+serviceAccount:
+  ## @param serviceAccount.create Create a service account
+  ##
+  create: false
+  ## @param serviceAccount.name Service account name
+  ##
+  name: ""
+  ## @param serviceAccount.annotations Service account annotations
+  ##
+  annotations: {}
+
+## @param imagePullSecrets Image pull secrets for private registries
+##
+imagePullSecrets: []
+
+## @section Pod Configuration
+##
+## @param tolerations Pod tolerations for node scheduling
+## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+##
+tolerations: []
+  # - key: "key"
+  #   operator: "Equal|Exists"
+  #   value: "value"
+  #   effect: "NoSchedule|PreferNoSchedule|NoExecute"
+
+## @section Node Selector Configuration
+##
+## @param nodeSelector.enabled Enable node selector
+##
 nodeSelector:
   enabled: false
+  ## @param nodeSelector.selector Node selector labels
+  ##
   selector:
     reportportal: true
